@@ -1,0 +1,11 @@
+9
+input	5
+dense	3
+leakyrelu	0.300000011921
+dense	4
+leakyrelu	0.300000011921
+dense	3
+leakyrelu	0.300000011921
+dense	2
+linear	0
+0.01
