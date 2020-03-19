@@ -92,9 +92,16 @@ example_input = np.array(
 )
 
 if args.train:
-    example_target = np.array(
-        [[1,2]]
-    )
+    example_input = np.array([
+        [1,2,3,4,5],
+        [0,1,2,3,4],
+        [-1,0,1,2,3]
+    ])
+    example_target = np.array([
+        [1,2],
+        [0,1],
+        [-1,0]
+    ])
 
     model.fit(
         example_input,example_target,
