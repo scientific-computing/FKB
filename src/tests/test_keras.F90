@@ -31,6 +31,4 @@ program test_keras
   result1 = net % output(input)
   print *, result1
 
-  call net % save('/home/jordan/Desktop/neural-fortran/model.txt')
-
 end program test_keras
