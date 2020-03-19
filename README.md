@@ -26,11 +26,12 @@ This library allows users to convert models built and trained in Keras to ones u
   * Create a network for each config
   * Run in parallel using `$OMP PARALLEL` directives
   * Average results of all predictions in ensemble
-* A bridge between Keras and Fortran
-  * Convert model trained in Keras (`h5` file) to Neural Fortran
+* A two-way bridge between Keras and Fortran
+  * Convert model trained in Keras (`h5` file) to Fortran
     * Any of the above layers are allowed
     * Sequential or Functional API
-  * Convert Neural Fortran model back to Keras
+  * Convert Fortran models back to Keras
+  * Check out [this](https://github.com/scientific-computing/KFB/tree/master/KerasWeightsProcessing#supported-models) for supported model types
 
 ---
 
@@ -146,63 +147,4 @@ Loading from file works the same way:
 
 ```fortran
 call net % load('model_config.txt')
-```
-
-### Building in parallel mode
-
-If you use gfortran and want to build neural-fortran in parallel mode,
-you must first install [OpenCoarrays](https://github.com/sourceryinstitute/OpenCoarrays).
-Once installed, use the compiler wrappers `caf` and `cafrun` to build and execute
-in parallel, respectively:
-
-```
-FC=caf cmake ..
-make
-cafrun -n 4 bin/example_mnist # run MNIST example on 4 cores
-```
-
-### Building with a different compiler
-
-If you want to build with a different compiler, such as Intel Fortran,
-specify `FC` when issuing `cmake`:
-
-```
-FC=ifort cmake ..
-```
-
-### Building with BLAS or MKL
-
-To use an external BLAS or MKL library for `matmul` calls,
-run cmake like this:
-
-```
-cmake .. -DBLAS=-lblas
-```
-
-where the value of `-DBLAS` should point to the desired BLAS implementation,
-which has to be available in the linking path.
-This option is currently available only with gfortran.
-
-### Building in double or quad precision
-
-By default, neural-fortran is built in single precision mode
-(32-bit floating point numbers). Alternatively, you can configure to build
-in 64 or 128-bit floating point mode:
-
-```
-cmake .. -DREAL=64
-```
-
-or
-
-```
-cmake .. -DREAL=128
-```
-
-### Building in debug mode
-
-To build with debugging flags enabled, type:
-
-```
-cmake .. -DCMAKE_BUILD_TYPE=debug
 ```
