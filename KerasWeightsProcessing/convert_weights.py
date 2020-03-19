@@ -68,16 +68,15 @@ def txt_to_h5(weights_file_name, output_file_name=''):
                     x = Activation('relu',alpha=float(param))(x)
 
                 elif layer_type == 'batchnormalization':
-                    batchnorm_count+=4
-                    x = BatchNormalization(name = 'batch_normalization_{}'.format(batchnorm_count))(x)
-
+                    batchnorm_count += 4
+                    x = BatchNormalization(name='batch_normalization_{}'.format(batchnorm_count // 4))(x)
                 elif layer_type == 'linear':
                     x = Activation('linear')(x)
 
             elif not layer_type.isalpha():
                 if lr == False:
                     lr = float(line[0]); continue
-                    
+
                 # found bias or weights numbers
                 w = np.asarray([float(num) for num in line])
 
@@ -96,12 +95,12 @@ def txt_to_h5(weights_file_name, output_file_name=''):
     # create model
     model = Model(inputs=input, outputs=x)
 
-
     # compile model
-    model.compile(loss='mse',
-                  optimizer=optimizers.SGD(lr),
-                  metrics=['accuracy'])
-
+    model.compile(
+        loss='mse',
+        optimizer=optimizers.SGD(lr),
+        metrics=['accuracy']
+    )
 
     # set weights and biases
     for idx, w in enumerate(weights):
@@ -115,7 +114,12 @@ def txt_to_h5(weights_file_name, output_file_name=''):
         params  = batchnorm_params[idx:idx+4]
         name    = 'batch_normalization_{}'.format(idx // 4 + 1)
         layer   = model.get_layer(name)
-        layer.set_weights( params )
+        layer.set_weights([
+            params[1],
+            params[0],
+            params[2],
+            params[3],
+        ])
 
     # view summary
 
@@ -124,8 +128,6 @@ def txt_to_h5(weights_file_name, output_file_name=''):
         output_file_name = weights_file_name.replace('.txt', '_converted.h5')
 
     model.save(output_file_name)
-
-
 
 def h5_to_txt(weights_file_name, output_file_name=''):
     '''
@@ -142,7 +144,10 @@ def h5_to_txt(weights_file_name, output_file_name=''):
     weights          = []                                       # dense layer
     layer_info       = []                                       # all layers
     batchnorm_params = []                                       # batchnormalization layers
-
+    out_bias_dict    = {}                                       # output bias if multiple dense outputs
+    out_weights_dict = {}                                       # output weights if multiple dense outputs
+    out_bias         = []                                       # output bias if multiple dense outputs
+    out_weights      = []                                       # output weights if multiple dense outputs
     #check and open file
     with h5py.File(weights_file_name,'r') as weights_file:
 
@@ -177,6 +182,16 @@ def h5_to_txt(weights_file_name, output_file_name=''):
         # check what type of keras model sequential or functional
         if model_config['class_name'] == 'Model':
             layer_config = model_config['config']['layers'][1:]
+
+            # get names of input layers and output layers
+            if model_config['config'].get('output_layers'):
+                output_layers = model_config['config'].get('output_layers',[])
+                output_names = [layer[0] for layer in output_layers]
+
+            if model_config['config'].get('input_layers'):
+                input_layers = model_config['config'].get('input_layers',[])
+                input_names = [layer[0] for layer in input_layers]
+
         else:
             layer_config = model_config['config']['layers']
 
@@ -254,6 +269,36 @@ def h5_to_txt(weights_file_name, output_file_name=''):
                     info = layer['config']['alpha']
                 )
 
+            # if there are multiple outputs, remove what was just added
+            # and combine in single output
+            if 'output_names' in locals() and len(output_names) > 1 and name in output_names:
+                try:
+                    if class_name not in ['dense']:
+                        warnings.warn('Only multiple dense outputs allowed! Skipping...')
+                        continue
+                    # remove last bias and weights
+                    # start building up the combined output bias and weights
+                    out_bias_dict[name]     = bias.pop()
+                    out_weights_dict[name]  = weights.pop()
+                    layer_info, out_info    = layer_info[:-2], layer_info[-2:]
+                except:
+                    pass
+    if 'output_names' in locals() and len(output_names) > 1:
+        #need to combine outputs here into one layer
+        out_info[0] = out_info[0].replace('1',str(len(output_names)))
+        layer_info.extend(out_info)
+
+        for name in output_names:
+            out_bias.extend(out_bias_dict.get(name))
+            out_weights.append(out_weights_dict.get(name))
+
+        bias.append(
+            np.array(out_bias).squeeze()
+        )
+        weights.append(
+            np.array(out_weights).squeeze().T
+        )
+
     if not output_file_name:
         # if not specified will use path of weights_file with txt extension
         output_file_name = weights_file_name.replace('.h5', '.txt')
@@ -286,7 +331,6 @@ def h5_to_txt(weights_file_name, output_file_name=''):
                 '{:0.7e}'.format(num) for num in b.tolist()
             )
             output_file.write(param_str + '\n')
-
 
 if __name__ == '__main__':
 

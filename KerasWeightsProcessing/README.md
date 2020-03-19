@@ -35,6 +35,7 @@ The `h5` is parsed into a `txt` file with the following configuration:
 <TOTAL_NUM_LAYERS>
 input <SIZE_OF_INPUT>
 <LAYER_TYPE>  <LAYER_INFO>
+<LEARNING RATE>
 .
 .
 .
@@ -51,6 +52,18 @@ input <SIZE_OF_INPUT>
 .
 .
 ```
+
+## Supported Models
+The library supports standard feed-forward models. The following operations are not permited:
+* Concatenations
+* Multiple inputs
+* Unsupported layers and activations
+
+The library also supports models with multiple outputs. In order make these usable with the Fortran, portion they are converted into models with single outputs. This will be problematic if each output has a different activation or they don't all use the same input. The below table shows how the model is converted. This is demonstrated in [`multi_output_model.py`]().
+
+|   Multiple Output Model  	|  Single Output Model 	|
+|------------	|--------	|
+| ![](https://github.com/scientific-computing/KFB/blob/master/Figures/multi_output_model.png?raw=true) 	|   ![](https://github.com/scientific-computing/KFB/blob/master/Figures/single_output_model.png?raw=true)   	|
 
 ## Ensure Keras Output Matches Neural Fortran
 
