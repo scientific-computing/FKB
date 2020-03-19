@@ -185,7 +185,8 @@ contains
     ! initialize the network
     call self % init(layer_names, layer_info)
 
-    ! read(fileunit, fmt=*, IOSTAT=end_of_file) self % lr
+    ! reading learning rate
+    read(fileunit, fmt=*, IOSTAT=end_of_file) self % lr
 
     ! read biases into dense layer
     do n = 1, size(self % layers)
@@ -298,6 +299,9 @@ contains
       ! layer name \t info
       write(fileunit, fmt=*) self % layer_names(n), self % layer_info(n)
     end do
+
+    ! writing learning rate
+    write(fileunit, fmt=*) self % lr
 
     do n = 1, size(self % layers)
       select type (layer => self % layers(n) % p)
