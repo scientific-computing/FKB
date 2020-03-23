@@ -1,10 +1,10 @@
-# The Keras-Fortran Bridge (KFB)
+# The Fortran-Keras Bridge (FKB)
 
 This two-way bridge connects environments where deep learning resources are plentiful, with those where they are scarce
 
-![](https://github.com/scientific-computing/KFB/blob/master/Figures/logo.png?raw=true)
+![](https://github.com/scientific-computing/FKB/blob/master/Figures/logo.png?raw=true)
 
-This library allows users to convert models built and trained in Keras to ones usuable in Fortran. In order to make this possible KFB implements a neural network library in Fortran. The foundations of which are derived from [Milan Curcic's](https://github.com/scientific-computing/KFB) original work. 
+This library allows users to convert models built and trained in Keras to ones usuable in Fortran. In order to make this possible FKB implements a neural network library in Fortran. The foundations of which are derived from [Milan Curcic's](https://github.com/scientific-computing/FKB) original work. 
 
 ## Additions
 * An extendable layer type
@@ -31,7 +31,7 @@ This library allows users to convert models built and trained in Keras to ones u
     * Any of the above layers are allowed
     * Sequential or Functional API
   * Convert Fortran models back to Keras
-  * Check out [this](https://github.com/scientific-computing/KFB/tree/master/KerasWeightsProcessing#supported-models) for supported model types
+  * Check out [this](https://github.com/scientific-computing/FKB/tree/master/KerasWeightsProcessing#supported-models) for supported model types
 
 ---
 
@@ -40,7 +40,7 @@ This library allows users to convert models built and trained in Keras to ones u
 Get the code:
 
 ```
-git clone https://github.com/scientific-computing/KFB
+git clone https://github.com/scientific-computing/FKB
 ```
 
 Dependencies:
@@ -116,7 +116,7 @@ call net % load('model_config.txt')
 
 
 ### Ensembles
-[mod_ensemble](https://github.com/scientific-computing/KFB/blob/master/src/lib/mod_ensemble.F90) allows ensembles of neural networks to be run in parallel. The `ensemble_type` will read all networks provided in the user specified directory. Calling `average` passes the input through all networks in the ensemble and averages their output. `noise_perturbation` is used to perturb the input to each model with Gaussian noise.
+[mod_ensemble](https://github.com/scientific-computing/FKB/blob/master/src/lib/mod_ensemble.F90) allows ensembles of neural networks to be run in parallel. The `ensemble_type` will read all networks provided in the user specified directory. Calling `average` passes the input through all networks in the ensemble and averages their output. `noise_perturbation` is used to perturb the input to each model with Gaussian noise.
 
 Put the names of the model files in `ensemble_members.txt`:
 ```
