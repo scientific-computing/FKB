@@ -155,13 +155,18 @@ def h5_to_txt(weights_file_name, output_file_name=''):
         model_weights = weights_file['model_weights']
         keras_version = weights_file.attrs['keras_version']
 
-        training_config = weights_file.attrs['training_config'].decode('utf-8')
-        training_config = training_config.replace('true','True')
-        training_config = training_config.replace('false','False')
-        training_config = training_config.replace('null','None')
-        training_config = eval(training_config)
+        if 'training_config' in weights_file.attrs:
+            training_config = weights_file.attrs['training_config'].decode('utf-8')
+            training_config = training_config.replace('true','True')
+            training_config = training_config.replace('false','False')
+            training_config = training_config.replace('null','None')
+            training_config = eval(training_config)
 
-        learning_rate   = training_config['optimizer_config']['config']['learning_rate']
+            if 'learning_rate' in training_config['optimizer_config']['config']: learning_rate = training_config['optimizer_config']['config']['learning_rate']
+            else: learning_rate = training_config['optimizer_config']['config']['lr']
+        else:
+            warnings.warn('Model has not been compiled: Setting learning rate default')
+            learning_rate = 0.001
 
         # Decode using the utf-8 encoding; change values for eval
         model_config = weights_file.attrs['model_config'].decode('utf-8')
@@ -196,7 +201,7 @@ def h5_to_txt(weights_file_name, output_file_name=''):
             layer_config = model_config['config']['layers']
 
         for idx,layer in enumerate(layer_config):
-            name = layer['config']['name']
+            name       = layer['config']['name']
             class_name = layer['class_name'].lower()
 
             if class_name not in SUPPORTED_LAYERS:
@@ -204,12 +209,17 @@ def h5_to_txt(weights_file_name, output_file_name=''):
                 continue
             elif class_name == 'dense':
                 # get weights and biases out of dictionary
-                layer_bias    = np.array(
-                    model_weights[name][name]['bias:0']
-                )
                 layer_weights = np.array(
                     model_weights[name][name]['kernel:0']
                 )
+
+                if 'bias:0' in model_weights[name][name]:
+                    layer_bias = np.array(
+                        model_weights[name][name]['bias:0']
+                    )
+                else:
+                    warnings.warn('No bias found: Replacing with zeros')
+                    layer_bias = np.zeros(layer_weights.shape[1])
 
                 # store bias values
                 bias.append(layer_bias)
