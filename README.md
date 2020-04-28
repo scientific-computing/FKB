@@ -1,10 +1,19 @@
 # The Fortran-Keras Bridge (FKB)
 
-This two-way bridge connects environments where deep learning resources are plentiful, with those where they are scarce
+This two-way bridge connects environments where deep learning resources are plentiful, with those where they are scarce. You can find the paper [here](https://arxiv.org/abs/2004.10652).
+
+```
+@article{ott2020fortran,
+  title={A Fortran-Keras Deep Learning Bridge for Scientific Computing},
+  author={Ott, Jordan and Pritchard, Mike and Best, Natalie and Linstead, Erik and Curcic, Milan and Baldi, Pierre},
+  journal={arXiv preprint arXiv:2004.10652},
+  year={2020}
+}
+```
 
 ![](https://github.com/scientific-computing/FKB/blob/master/Figures/logo.png?raw=true)
 
-This library allows users to convert models built and trained in Keras to ones usuable in Fortran. In order to make this possible FKB implements a neural network library in Fortran. The foundations of which are derived from [Milan Curcic's](https://github.com/scientific-computing/FKB) original work. 
+This library allows users to convert models built and trained in Keras to ones usuable in Fortran. In order to make this possible FKB implements a neural network library in Fortran. The foundations of which are derived from [Milan Curcic's](https://github.com/scientific-computing/FKB) original work.
 
 ## Additions
 * An extendable layer type
@@ -36,6 +45,8 @@ This library allows users to convert models built and trained in Keras to ones u
 ---
 
 ## Getting started
+
+Check out an example in the [getting started notebook](https://github.com/scientific-computing/FKB/blob/master/GettingStarted.ipynb)
 
 Get the code:
 
