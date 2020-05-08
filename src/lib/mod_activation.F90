@@ -100,7 +100,7 @@ contains
     real(rk), intent(in) :: x(:)
     real(rk), intent(in) :: alpha
     real(rk) :: res(size(x))
-    res = x
+    res = 1
   end function linear_prime
 
   pure function sigmoid(x, alpha) result(res)
