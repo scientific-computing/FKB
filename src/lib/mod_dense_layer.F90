@@ -114,7 +114,6 @@ contains
       reshape(db, (/1, size(db)/))&
     )
 
-    db = self % activation_prime(self % z, self % alpha) * g
     self % gradient = matmul(self % w, db)
 
     ! weight updates
