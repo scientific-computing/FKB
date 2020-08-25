@@ -14,7 +14,7 @@ from keras.layers import Input, Activation
 from keras import optimizers
 
 INPUT = ['input']
-ACTIVATIONS = ['relu', 'linear', 'leakyrelu']
+ACTIVATIONS = ['relu', 'linear', 'leakyrelu', 'sigmoid']
 SUPPORTED_LAYERS = ['dense', 'dropout', 'batchnormalization'] + ACTIVATIONS + INPUT
 
 def txt_to_h5(weights_file_name, output_file_name=''):
