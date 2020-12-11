@@ -205,7 +205,8 @@ def h5_to_txt(weights_file_name, output_file_name=''):
             class_name = layer['class_name'].lower()
 
             if class_name not in SUPPORTED_LAYERS:
-                warnings.warn('Unsupported layer found! Skipping...')
+                warning_str = 'Unsupported layer, %s, found! Skipping...' % class_name
+                warnings.warn(warning_str)
                 continue
             elif class_name == 'dense':
                 # get weights and biases out of dictionary
@@ -229,7 +230,8 @@ def h5_to_txt(weights_file_name, output_file_name=''):
                 activation = layer['config']['activation']
 
                 if activation not in ACTIVATIONS:
-                    warnings.warn('Unsupported activation found! Replacing with Linear.')
+                    warning_str = 'Unsupported activation, %s, found! Replacing with Linear.' % activation
+                    warnings.warn(warning_str)
                     activation = 'linear'
 
                 # store dimension of hidden dim
