@@ -50,6 +50,6 @@ history = model.fit(x_train, y_train,
                     verbose=1,
                     validation_data=(x_test, y_test))
 
-model.save(weights_file_name)
+model.save(weights_file_name, save_format='h5')
 
 h5_to_txt(weights_file_name, txt_file_name)
