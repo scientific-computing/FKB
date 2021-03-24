@@ -7,7 +7,6 @@ import tensorflow as tf
 
 ############## REPRODUCIBILITY ############
 tf.compat.v1.set_random_seed(0)
-
 np.random.seed(0)
 ###########################################
 
