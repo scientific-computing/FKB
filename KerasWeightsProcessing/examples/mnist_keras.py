@@ -2,7 +2,7 @@ import sys
 sys.path.append('../')
 from convert_weights import h5_to_txt
 
-import tensorflow.keras as keras
+from tensorflow import keras
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.layers import Dense, Input
