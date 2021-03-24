@@ -12,9 +12,7 @@ from convert_weights import txt_to_h5
 # set random seeds for reproducibility
 np.random.seed(123)
 import tensorflow as tf
-
 tf.compat.v1.set_random_seed(123)
-
 
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.layers import Dense, Input, LeakyReLU, Dropout, BatchNormalization
