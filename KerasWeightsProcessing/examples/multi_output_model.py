@@ -7,13 +7,14 @@ import tensorflow as tf
 
 ############## REPRODUCIBILITY ############
 tf.compat.v1.set_random_seed(0)
+
 np.random.seed(0)
 ###########################################
 
-from keras.models import load_model
-from keras.models import Sequential, Model
-from keras.utils.vis_utils import plot_model
-from keras.layers import Dense, BatchNormalization, Input
+from tensorflow.keras.models import load_model
+from tensorflow.keras.models import Sequential, Model
+from tensorflow.compat.v1.keras.utils import plot_model
+from tensorflow.keras.layers import Dense, BatchNormalization, Input
 
 input = x = Input((5,))
 for i in range(3):
