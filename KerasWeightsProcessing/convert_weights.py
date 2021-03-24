@@ -127,7 +127,7 @@ def txt_to_h5(weights_file_name, output_file_name=''):
         # if not specified will use path of weights_file with h5 extension
         output_file_name = weights_file_name.replace('.txt', '_converted.h5')
 
-    model.save(output_file_name)
+    model.save(output_file_name, save_format='h5')
 
 def h5_to_txt(weights_file_name, output_file_name=''):
     '''

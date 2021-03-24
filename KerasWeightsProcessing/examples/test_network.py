@@ -12,7 +12,9 @@ from convert_weights import txt_to_h5
 # set random seeds for reproducibility
 np.random.seed(123)
 import tensorflow as tf
-tf.compat.v1.random.set_random_seed(123)
+
+tf.compat.v1.set_random_seed(123)
+
 
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.layers import Dense, Input, LeakyReLU, Dropout, BatchNormalization
@@ -111,7 +113,7 @@ if args.train:
 keras_predictions = model.predict(example_input)[0]
 
 # save the weights
-model.save(weights_file)
+model.save(weights_file, save_format='h5')
 # convert h5 file to txt
 h5_to_txt(
     weights_file_name=weights_file,
