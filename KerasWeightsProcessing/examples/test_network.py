@@ -1,4 +1,4 @@
-import tensorflow.keras as keras
+from tensorflow import keras
 import argparse
 import numpy as np
 import subprocess
