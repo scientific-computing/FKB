@@ -13,7 +13,7 @@ This two-way bridge connects environments where deep learning resources are plen
 
 ![](https://github.com/scientific-computing/FKB/blob/master/Figures/logo.png?raw=true)
 
-This library allows users to convert models built and trained in Keras to ones usuable in Fortran. In order to make this possible FKB implements a neural network library in Fortran. The foundations of which are derived from [Milan Curcic's](https://github.com/modern-fortran/neural-fortran) original work.
+This library allows users to convert models built and trained in Keras to ones usable in Fortran. In order to make this possible FKB implements a neural network library in Fortran. The foundations of which are derived from [Milan Curcic's](https://github.com/modern-fortran/neural-fortran) original work.
 
 ## Additions
 * An extendable layer type
