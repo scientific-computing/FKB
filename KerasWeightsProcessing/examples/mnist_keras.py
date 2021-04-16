@@ -2,11 +2,11 @@ import sys
 sys.path.append('../')
 from convert_weights import h5_to_txt
 
-import keras
-from keras.datasets import mnist
-from keras.models import Sequential, Model
-from keras.layers import Dense, Input
-from keras.optimizers import RMSprop
+from tensorflow import keras
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.models import Sequential, Model
+from tensorflow.keras.layers import Dense, Input
+from tensorflow.keras.optimizers import RMSprop
 
 weights_file_name = 'mnist_example.h5'
 txt_file_name     = weights_file_name.replace('h5', 'txt')
@@ -50,6 +50,6 @@ history = model.fit(x_train, y_train,
                     verbose=1,
                     validation_data=(x_test, y_test))
 
-model.save(weights_file_name)
+model.save(weights_file_name, save_format='h5')
 
 h5_to_txt(weights_file_name, txt_file_name)

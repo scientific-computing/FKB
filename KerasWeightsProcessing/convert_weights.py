@@ -6,12 +6,12 @@ import numpy as np
 
 import numpy as np
 import math
-import keras
-import keras.backend as K
-from keras.models import Sequential, Model
-from keras.layers import Dense, Dropout, BatchNormalization
-from keras.layers import Input, Activation
-from keras import optimizers
+from tensorflow import keras
+import tensorflow.keras.backend as K
+from tensorflow.keras.models import Sequential, Model
+from tensorflow.keras.layers import Dense, Dropout, BatchNormalization
+from tensorflow.keras.layers import Input, Activation
+from tensorflow.keras import optimizers
 
 INPUT = ['input']
 ACTIVATIONS = ['relu', 'linear', 'leakyrelu', 'sigmoid']
@@ -127,7 +127,7 @@ def txt_to_h5(weights_file_name, output_file_name=''):
         # if not specified will use path of weights_file with h5 extension
         output_file_name = weights_file_name.replace('.txt', '_converted.h5')
 
-    model.save(output_file_name)
+    model.save(output_file_name, save_format='h5')
 
 def h5_to_txt(weights_file_name, output_file_name=''):
     '''

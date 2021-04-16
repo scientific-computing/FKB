@@ -1,4 +1,4 @@
-import keras
+from tensorflow import keras
 import argparse
 import numpy as np
 import subprocess
@@ -12,11 +12,11 @@ from convert_weights import txt_to_h5
 # set random seeds for reproducibility
 np.random.seed(123)
 import tensorflow as tf
-tf.set_random_seed(123)
+tf.compat.v1.set_random_seed(123)
 
-from keras.models import Sequential, Model
-from keras.layers import Dense, Input, LeakyReLU, Dropout, BatchNormalization
-from keras.models import load_model
+from tensorflow.keras.models import Sequential, Model
+from tensorflow.keras.layers import Dense, Input, LeakyReLU, Dropout, BatchNormalization
+from tensorflow.keras.models import load_model
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--train', action='store_true')
@@ -111,7 +111,7 @@ if args.train:
 keras_predictions = model.predict(example_input)[0]
 
 # save the weights
-model.save(weights_file)
+model.save(weights_file, save_format='h5')
 # convert h5 file to txt
 h5_to_txt(
     weights_file_name=weights_file,

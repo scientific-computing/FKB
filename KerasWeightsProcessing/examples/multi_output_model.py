@@ -6,14 +6,14 @@ import convert_weights
 import tensorflow as tf
 
 ############## REPRODUCIBILITY ############
-tf.set_random_seed(0)
+tf.compat.v1.set_random_seed(0)
 np.random.seed(0)
 ###########################################
 
-from keras.models import load_model
-from keras.models import Sequential, Model
-from keras.utils.vis_utils import plot_model
-from keras.layers import Dense, BatchNormalization, Input
+from tensorflow.keras.models import load_model
+from tensorflow.keras.models import Sequential, Model
+from tensorflow.compat.v1.keras.utils import plot_model
+from tensorflow.keras.layers import Dense, BatchNormalization, Input
 
 input = x = Input((5,))
 for i in range(3):
@@ -34,7 +34,7 @@ multi_output_model.compile(
     metrics=['accuracy']
 )
 # SAVE TO FILE FOR PARSING
-multi_output_model.save('multi_output_model.h5')
+multi_output_model.save('multi_output_model.h5', save_format='h5')
 
 # CONVERT TO TXT
 convert_weights.h5_to_txt('multi_output_model.h5', 'single_output_model.txt')
