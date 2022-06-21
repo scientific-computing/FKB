@@ -2,7 +2,8 @@ rm -rf build
 mkdir build
 cd build
 
-FC=ifort cmake .. -DSERIAL=1 -DREAL=64 -DINT=32
+FC=gfortran cmake .. -DSERIAL=1
+# FC=gfortran cmake .. -DSERIAL=1 -DREAL=64    # enable double precision real number (note that the default precision for real number is single. See src/lib/mod_kinds.F90)
 # FC='mpif90 -qopenmp' cmake .. -DSERIAL=1
 
 make
