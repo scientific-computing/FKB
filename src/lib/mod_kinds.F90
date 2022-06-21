@@ -11,6 +11,8 @@ module mod_kinds
   integer,parameter :: rk = real64
 #elif REAL128
   integer,parameter :: rk = real128
+#elif REAL32
+  integer,parameter :: rk = real32
 #else
   integer,parameter :: rk = real32
 #endif
@@ -19,6 +21,8 @@ integer,parameter :: fk = selected_real_kind(12)
 
 #ifdef INT64
   integer, parameter :: ik = int64
+#elif INT32
+  integer, parameter :: ik = int32
 #else
   integer, parameter :: ik = int32
 #endif

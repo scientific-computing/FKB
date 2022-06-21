@@ -23,7 +23,7 @@ program test_ensembles
   call get_command_argument(1,args(1))
 
   ! build ensemble from members in specified directory
-  ensemble = ensemble_type(args(1), 0.0)
+  ensemble = ensemble_type(args(1), 0.0_rk)
 
   input = [1, 2, 3, 4, 5]
 

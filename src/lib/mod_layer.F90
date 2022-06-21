@@ -68,7 +68,7 @@ contains
 
   pure type(array1d) function array1d_constructor(length) result(a)
     ! Overloads the default type constructor.
-    integer, intent(in) :: length
+    integer(ik), intent(in) :: length
     allocate(a % array(length))
     a % array = 0
   end function array1d_constructor
@@ -76,7 +76,7 @@ contains
 
   pure type(array2d) function array2d_constructor(dims) result(a)
     ! Overloads the default type constructor.
-    integer, intent(in) :: dims(2)
+    integer(ik), intent(in) :: dims(2)
     allocate(a % array(dims(1), dims(2)))
     a % array = 0
   end function array2d_constructor
@@ -106,7 +106,7 @@ contains
     do n = 1, nm - 1
       dw(n) = array2d(dims(n:n+1))
     end do
-    dw(n) = array2d([dims(n), 1])
+    dw(n) = array2d([dims(n), 1_ik])
   end subroutine dw_init
 
 

@@ -2,7 +2,7 @@ rm -rf build
 mkdir build
 cd build
 
-FC=gfortran cmake .. -DSERIAL=1
+FC=ifort cmake .. -DSERIAL=1 -DREAL=64 -DINT=32
 # FC='mpif90 -qopenmp' cmake .. -DSERIAL=1
 
 make
