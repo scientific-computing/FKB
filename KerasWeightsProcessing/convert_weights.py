@@ -14,7 +14,7 @@ from keras.layers import Input, Activation
 from keras import optimizers
 
 INPUT = ['input']
-ACTIVATIONS = ['relu', 'linear', 'leakyrelu', 'sigmoid']
+ACTIVATIONS = ['elu', 'exponential', 'relu', 'linear', 'leakyrelu', 'softplus', 'sigmoid', 'tanh']
 SUPPORTED_LAYERS = ['dense', 'dropout', 'batchnormalization'] + ACTIVATIONS + INPUT
 
 def txt_to_h5(weights_file_name, output_file_name=''):
@@ -242,12 +242,21 @@ def h5_to_txt(weights_file_name, output_file_name=''):
                     )
                 )
                 # add information about the activation
-                layer_info.append(
-                    info_str.format(
-                        name = activation,
-                        info = 0
+                if (activation == 'elu'):
+                    layer_info.append(
+                        info_str.format(
+                            name = activation,
+                            info = 1
+                        )
                     )
-                )
+                else:
+                    layer_info.append(
+                        info_str.format(
+                            name = activation,
+                            info = 0
+                        )
+                    )
+
             elif class_name == 'batchnormalization':
                 # get beta, gamma, moving_mean, moving_variance from dictionary
                 for key in sorted(model_weights[name][name].keys()):
