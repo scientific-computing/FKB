@@ -56,7 +56,7 @@ contains
 
     call net % init(layer_names, layer_info)
 
-    call net % sync(1)
+    call net % sync(1_ik)
 
   end function net_constructor
 

@@ -14,7 +14,7 @@ from keras.layers import Input, Activation
 from keras import optimizers
 
 INPUT = ['input']
-ACTIVATIONS = ['relu', 'linear', 'leakyrelu', 'sigmoid']
+ACTIVATIONS = ['elu', 'exponential', 'relu', 'linear', 'leakyrelu', 'softplus', 'sigmoid', 'tanh']
 SUPPORTED_LAYERS = ['dense', 'dropout', 'batchnormalization'] + ACTIVATIONS + INPUT
 
 def txt_to_h5(weights_file_name, output_file_name=''):
@@ -156,7 +156,10 @@ def h5_to_txt(weights_file_name, output_file_name=''):
         keras_version = weights_file.attrs['keras_version']
 
         if 'training_config' in weights_file.attrs:
-            training_config = weights_file.attrs['training_config'].decode('utf-8')
+            try:
+                training_config = weights_file.attrs['training_config'].decode('utf-8')
+            except AttributeError: 
+                training_config = weights_file.attrs['training_config']
             training_config = training_config.replace('true','True')
             training_config = training_config.replace('false','False')
             training_config = training_config.replace('null','None')
@@ -169,7 +172,10 @@ def h5_to_txt(weights_file_name, output_file_name=''):
             learning_rate = 0.001
 
         # Decode using the utf-8 encoding; change values for eval
-        model_config = weights_file.attrs['model_config'].decode('utf-8')
+        try:
+            model_config = weights_file.attrs['model_config'].decode('utf-8')
+        except AttributeError:
+            model_config = weights_file.attrs['model_config']
         model_config = model_config.replace('true','True')
         model_config = model_config.replace('false','False')
         model_config = model_config.replace('null','None')
@@ -197,7 +203,7 @@ def h5_to_txt(weights_file_name, output_file_name=''):
                 input_layers = model_config['config'].get('input_layers',[])
                 input_names = [layer[0] for layer in input_layers]
 
-        else:
+        else: # 'Sequential'
             layer_config = model_config['config']['layers']
 
         for idx,layer in enumerate(layer_config):
@@ -242,12 +248,21 @@ def h5_to_txt(weights_file_name, output_file_name=''):
                     )
                 )
                 # add information about the activation
-                layer_info.append(
-                    info_str.format(
-                        name = activation,
-                        info = 0
+                if (activation == 'elu'):
+                    layer_info.append(
+                        info_str.format(
+                            name = activation,
+                            info = 1
+                        )
                     )
-                )
+                else:
+                    layer_info.append(
+                        info_str.format(
+                            name = activation,
+                            info = 0
+                        )
+                    )
+
             elif class_name == 'batchnormalization':
                 # get beta, gamma, moving_mean, moving_variance from dictionary
                 for key in sorted(model_weights[name][name].keys()):
@@ -276,9 +291,18 @@ def h5_to_txt(weights_file_name, output_file_name=''):
 
             elif class_name in ACTIVATIONS:
                 # replace previous dense layer with the advanced activation function (LeakyReLU)
+                
+                try:
+                    _tmp = layer['config']['alpha']
+                except KeyError:
+                    if class_name == 'relu':
+                        _tmp = 0 # alpha is currently not used in mod_activation
+                    else:
+                        raise KeyError("alpha")
+
                 layer_info[-1] = info_str.format(
                     name = class_name,
-                    info = layer['config']['alpha']
+                    info = _tmp
                 )
 
             # if there are multiple outputs, remove what was just added

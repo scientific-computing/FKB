@@ -2,7 +2,12 @@ rm -rf build
 mkdir build
 cd build
 
-FC=gfortran cmake .. -DSERIAL=1
+# perlmutter
+module load PrgEnv-gnu/8.3.3
+module load gcc/11.2.0
+
+# FC=gfortran cmake .. -DSERIAL=1
+FC=gfortran cmake .. -DSERIAL=1 -DREAL=64    # enable double precision real number (note that the default precision for real number is single. See src/lib/mod_kinds.F90)
 # FC='mpif90 -qopenmp' cmake .. -DSERIAL=1
 
 make
