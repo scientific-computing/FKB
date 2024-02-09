@@ -146,12 +146,19 @@ contains
     res = 1
   end function linear_prime
 
+  ! Balwinder's version (July 5th, 2022)
+  ! - addressing floating point overflow
   pure function sigmoid(x, alpha) result(res)
     ! Sigmoid activation function.
     real(rk), intent(in) :: x(:)
     real(rk), intent(in) :: alpha
-    real(rk) :: res(size(x))
-    res = 1 / (1 + exp(-x))
+    real(rk) :: res(size(x)),y(size(x))
+    real(rk), parameter :: exp_lim = log(tiny(x)) !precision based limiter
+    y(:) = x(:)
+    where(y < exp_lim)
+       y = exp_lim
+    end where
+    res = 1. / (1. + exp(-y))
   endfunction sigmoid
 
   pure function sigmoid_prime(x, alpha) result(res)
