@@ -51,7 +51,7 @@ Check out an example in the [getting started notebook](https://github.com/scient
 Get the code:
 
 ```
-git clone https://github.com/scientific-computing/FKB
+git clone https://github.com/sungdukyu/FKB64
 ```
 
 Dependencies:
