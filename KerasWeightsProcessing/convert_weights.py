@@ -14,7 +14,7 @@ from keras.layers import Input, Activation
 from keras import optimizers
 
 INPUT = ['input']
-ACTIVATIONS = ['elu', 'exponential', 'relu', 'linear', 'leakyrelu', 'softplus', 'sigmoid', 'tanh']
+ACTIVATIONS = ['swish', 'elu', 'exponential', 'relu', 'linear', 'leakyrelu', 'softplus', 'sigmoid', 'tanh']
 SUPPORTED_LAYERS = ['dense', 'dropout', 'batchnormalization'] + ACTIVATIONS + INPUT
 
 def txt_to_h5(weights_file_name, output_file_name=''):
@@ -70,8 +70,9 @@ def txt_to_h5(weights_file_name, output_file_name=''):
                 elif layer_type == 'batchnormalization':
                     batchnorm_count += 4
                     x = BatchNormalization(name='batch_normalization_{}'.format(batchnorm_count // 4))(x)
-                elif layer_type == 'linear':
-                    x = Activation('linear')(x)
+
+                elif layer_type == 'swish':
+                    x = Activation('swish')(x)
 
             elif not layer_type.isalpha():
                 if lr == False:

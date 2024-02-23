@@ -19,6 +19,7 @@ module mod_activation
   public :: elu, elu_prime
   public :: exponential, exponential_prime
   public :: softplus, softplus_prime
+  public :: swish, swish_prime
 
   interface
     pure function activation_function(x, alpha)
@@ -30,6 +31,24 @@ module mod_activation
   end interface
 
 contains
+
+  pure function swish(x, alpha) result(res)
+    !! swish (or silu) activation function.
+    !! beta is fixed (i.e., beta==1.).
+    real(rk), intent(in) :: x(:)
+    real(rk), intent(in) :: alpha
+    real(rk) :: res(size(x))
+    res = x * sigmoid(x, -999._rk)
+  end function swish
+
+  pure function swish_prime(x, alpha) result(res)
+    ! First derivative of swish activation function.
+    ! beta is fixed (i.e., beta==1.).
+    real(rk), intent(in) :: x(:)
+    real(rk), intent(in) :: alpha
+    real(rk) :: res(size(x))
+    res = sigmoid(x, -999._rk) + x * sigmoid_prime(x, -999._rk)
+  end function swish_prime
 
   pure function elu(x, alpha) result(res)
     !! Exponential Linear Unit (ELU) activation function.
@@ -106,7 +125,7 @@ contains
     where (0.3 * x > 0)
       res = 1
     elsewhere
-      res = 0
+      res = alpha
     end where
   end function leaky_relu_prime
 

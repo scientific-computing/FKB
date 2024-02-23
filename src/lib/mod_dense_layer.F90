@@ -59,6 +59,12 @@ contains
 
     ! assign activation function
     select case(trim(activation))
+      case('swish')
+        layer % activation => swish
+        layer % activation_prime => swish_prime
+      case('silu')
+        layer % activation => swish
+        layer % activation_prime => swish_prime
       case('elu')
         layer % activation => elu
         layer % activation_prime => elu_prime
